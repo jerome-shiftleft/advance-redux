@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import Cart from "./components/Cart/Cart";
 import Layout from "./components/Layout/Layout";
@@ -6,6 +7,14 @@ import "./App.scss";
 
 function App() {
   const showCart = useSelector((state) => state.ui.cartIsVisible);
+  const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    fetch('https://react-playground-aa619-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json', {
+      method: 'PUT',
+      body: JSON.stringify(cart),
+    })
+  }, [cart]);
 
   return (
     <Layout>
