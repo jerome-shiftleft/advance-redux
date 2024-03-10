@@ -9,7 +9,7 @@ export const fetchCartData = () => {
       );
 
       if (!response.ok) {
-        throw new Error('Could not fetch cart data!');
+        throw new Error("Could not fetch cart data!");
       }
 
       const data = await response.json();
@@ -17,9 +17,14 @@ export const fetchCartData = () => {
     };
 
     try {
-      const cartData = await fetchData()
-      dispatch(cartActions.replaceCart(cartData));
-    } catch(error) {
+      const cartData = await fetchData();
+      dispatch(
+        cartActions.replaceCart({
+          items: cartData.items || [],
+          totalQuantity: cartData.totalQuantity,
+        })
+      );
+    } catch (error) {
       dispatch(
         uiActions.showNotification({
           status: "error",
@@ -28,7 +33,6 @@ export const fetchCartData = () => {
         })
       );
     } // end of try catch
-
   }; // end of return (dispatch)
 }; // end of export const fetchCartData
 
@@ -49,7 +53,7 @@ export const sendCartData = (cart) => {
           method: "PUT",
           body: JSON.stringify({
             items: cart.items,
-            totalQuantity: cart.totalQuantity
+            totalQuantity: cart.totalQuantity,
           }),
         }
       );
