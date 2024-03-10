@@ -5,17 +5,21 @@ const cartSlice = createSlice({
   initialState: {
     items: [],
     totalQuantity: 0,
-    //isInitial: true,
+    changed: false,    
   },
-  reducers: {
-    // setState(state, action) {
-    //   state.isInitial = action.payload;
-    // },
+  reducers: {    
+    replaceCart(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.items = action.payload.items;
+    },
     addItemToCart(state, action) {
       const newItem = action.payload;
-      const existingItem = state.items.find((item) => newItem.id === item.id);
-      //state.isInitial = false;
+      if (!state.items) {
+        state.items = []; // Initialize items if it's undefined
+      }
+      const existingItem = state.items.find((item) => newItem.id === item.id);      
       state.totalQuantity++;
+      state.changed = true;
       if (!existingItem) {
         state.items.push({
           id: newItem.id,
@@ -31,9 +35,9 @@ const cartSlice = createSlice({
     },
     removeItemFromCart(state, action) {
       const id = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-      //state.isInitial = false;
+      const existingItem = state.items.find((item) => item.id === id);      
       state.totalQuantity--;
+      state.changed = true;
       if (existingItem.quantity === 1) {
         state.items = state.items.filter((item) => item.id !== id);
       } else {
