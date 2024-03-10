@@ -47,7 +47,10 @@ export const sendCartData = (cart) => {
         "https://react-playground-aa619-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json",
         {
           method: "PUT",
-          body: JSON.stringify(cart),
+          body: JSON.stringify({
+            items: cart.items,
+            totalQuantity: cart.totalQuantity
+          }),
         }
       );
 
