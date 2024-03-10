@@ -1,9 +1,34 @@
-
 import { uiActions } from "./ui-slice";
 
 export const fetchCartData = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      const response = await fetch(
+        "https://react-playground-aa619-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json"
+      );
 
-}
+      if (!response.ok) {
+        throw new Error('Could not fetch cart data!');
+      }
+
+      const data = await response.json();
+      return data;
+    };
+
+    try {
+      await fetchData()
+    } catch(error) {
+      dispatch(
+        uiActions.showNotification({
+          status: "error",
+          title: "Error!",
+          message: "Fetching cart data failed!",
+        })
+      );
+    } // end of try catch
+
+  }; // end of return (dispatch)
+}; // end of export const fetchCartData
 
 export const sendCartData = (cart) => {
   return async (dispatch) => {
